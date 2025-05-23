@@ -1,25 +1,15 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Add New Car') }}
+        </h2>
+    </x-slot>
 
-@section('content')
-<body class="bg-gray-100">
-
-    <!-- Navbar -->
-    
-
-
-    
-
-        @livewire('dealer.add-car')
-
-        
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
+                @livewire('dealer.add-car')
+            </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white text-center py-6 mt-10">
-        <p>&copy; 2025 LuxuryCarHub. All Rights Reserved.</p>
-        <p class="text-sm">LuxuryCarHub.com | Contact: support@luxurycarhub.com</p>
-    </footer>
-
-</body>
-@endsection
+</x-app-layout>

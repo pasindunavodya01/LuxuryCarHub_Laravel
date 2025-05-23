@@ -34,9 +34,8 @@
 
             <!-- Page Content -->
             <main>
-    @yield('content')
-</main>
-
+                {{ $slot }}
+            </main>
         </div>
 
         @stack('modals')

@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DealerCarController;
 use App\Http\Controllers\DealerController;
 use App\Http\Controllers\VehicleController;
+use Laravel\Jetstream\Jetstream;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -17,7 +18,7 @@ Route::get('/contact', function () {
 })->name('contact');
 
 // Authentication routes with role-based redirection
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         $role = auth()->user()->role;
         if ($role === 'dealer') {
@@ -26,6 +27,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return view('dashboard.user');
         }
     })->name('dashboard');
+
+    // Profile Routes
+    Route::get('/user/profile', function () {
+        return view('profile.show');
+    })->name('profile.show');
+
+    Route::get('/user/profile/edit', function () {
+        return view('profile.edit');
+    })->name('profile.edit');
 });
 
 Route::middleware('auth:sanctum')->group(function () {
