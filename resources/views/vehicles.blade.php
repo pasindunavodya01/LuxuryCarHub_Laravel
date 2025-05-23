@@ -7,6 +7,7 @@
     <title>Luxury Car Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @livewireStyles
 </head>
 <body class="bg-gray-100">
 
@@ -73,61 +74,7 @@
     </p>
 </header>
 
-<!-- Search -->
-<div class="bg-white py-4 shadow-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <form method="GET" action="{{ url('/vehicles') }}" class="flex space-x-4">
-            <input 
-                type="text" 
-                name="search" 
-                value="{{ request('search') }}" 
-                placeholder="Search by make, model, or year..." 
-                class="border border-gray-300 rounded-lg px-4 py-2 w-full">
-            <button type="submit" class="bg-gray-800 text-white px-6 py-2 rounded-lg">Search</button>
-            <a href="{{ url('/vehicles') }}" class="bg-gray-500 text-white px-6 py-2 rounded-lg">Clear</a>
-        </form> 
-    </div>
-</div>
-
-<!-- Cars -->
-<div class="container mx-auto px-4 py-2">
-    <h2 class="text-3xl font-bold text-gray-800 mb-6">Cars</h2>
-    
-    @if(isset($error))
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
-            <span class="block sm:inline">{{ $error }}</span>
-        </div>
-    @endif
-
-    @if(count($vehicles ?? []) === 0)
-        <div class="text-center py-8">
-            <p class="text-gray-600">No vehicles found{{ request('search') ? ' matching your search.' : '.' }}</p>
-        </div>
-    @else
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            @foreach ($vehicles as $car)                <a href="{{ route('vehicles.show', $car->_id) }}" class="block">
-                <div class="max-w-sm rounded overflow-hidden shadow-lg bg-white hover:shadow-xl transition-shadow">
-                        <img class="w-full h-48 object-cover" 
-                             src="{{ url('storage/' . $car->images) }}" 
-                             alt="{{ $car->make }} {{ $car->model }}">
-                        <div class="px-5 py-1">
-                            <div class="font-bold text-xl mb-2">
-                                {{ $car->make }} {{ $car->model }}
-                            </div>
-                            <p class="text-gray-700 text-base">
-                                <strong>Year:</strong> {{ $car->year }}<br>
-                                <strong>Fuel:</strong> {{ $car->fuel }}
-                            </p>
-                            <p class="text-green-500 font-bold mt-4">
-                                Rs.{{ number_format($car->price, 2) }}
-                            </p>
-                        </div>
-                    </div>
-                </a>
-            @endforeach
-        </div>
-    @endif
-</div>
+@livewire('vehicle.vehicle-list')
 
 <!-- Footer -->
 <footer class="bg-gray-800 text-white text-center py-6">
@@ -136,5 +83,6 @@
 </footer>
 ```
 
+    @livewireScripts
 </body>
 </html>

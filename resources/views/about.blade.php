@@ -17,7 +17,7 @@
                     <img src="{{ asset('images/Logo.jpg') }}" alt="Logo" class="mr-3 h-10 rounded">
                     LuxuryCarHub
                 </a>
-                <div class="ml-10 flex space-x-4 hidden md:flex">
+                <div class="ml-10 space-x-4 hidden md:flex">
                     <a href="/vehicles" class="text-gray-300 hover:text-white">Vehicles</a>
                     <a href="#dealers" class="text-gray-300 hover:text-white">Dealers</a>
                     <a href="/map" class="text-gray-300 hover:text-white">Maps</a>
@@ -59,28 +59,40 @@
     });
 </script>
 
-    <!-- Content -->
-    <div class="container mx-auto px-4 py-10">
-        <h1 class="text-4xl font-bold text-gray-800 mb-6">About Us</h1>
-        <p class="text-gray-700 text-lg leading-relaxed">
-            Welcome to LuxuryCarHub, your ultimate destination for luxury vehicles. We are committed to providing a seamless and premium experience for luxury car enthusiasts around the world. Our team is dedicated to connecting you with the best luxury car dealers and resources.
-        </p>
-        <p class="text-gray-700 text-lg mt-4">
-            Founded in 2025, LuxuryCarHub aims to redefine the way you explore and purchase luxury vehicles, offering cutting-edge tools and exceptional customer service. Thank you for choosing us as your trusted partner in the world of luxury automobiles.
-        </p>
-        <h2>Our Services</h2>
-    <ul class="text-gray-700 text-lg mt-4">
-        <li><strong>Luxury Car Listings</strong>: Access a curated selection of the most exquisite luxury vehicles from trusted dealers worldwide.</li>
-        <li><strong>Dealer Connections</strong>: Seamlessly connect with authorized dealers for a personalized and transparent car-buying experience.</li>
-        <li><strong>Expert Reviews and Insights</strong>: Stay informed with in-depth reviews, the latest trends, and expert advice on luxury automobiles.</li>
-        <li><strong>Financing Assistance</strong>: Explore financing options tailored to suit your premium vehicle needs.</li>
-        <li><strong>Custom Search Tools</strong>: Discover your dream car with our advanced search and filtering features, designed to make finding the perfect luxury vehicle effortless.</li>
-        <li><strong>Dedicated Support</strong>: Experience exceptional customer service with our team available to assist you at every step.</li>
-    </ul>
-    <p class="text-gray-700 text-lg mt-4">
-        Thank you for choosing <strong>LuxuryCarHub</strong> as your trusted partner in the world of luxury automobiles. Together, let’s drive your passion for luxury to new heights.
-    </p>
+   <!-- About Us Section -->
+<section class="bg-white py-16">
+  <div class="container mx-auto px-6 md:px-12 lg:px-20">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">About Us</h1>
+      <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+        Welcome to <span class="font-semibold text-black">LuxuryCarHub</span>, your ultimate destination for luxury vehicles. We're committed to providing a seamless and premium experience for luxury car enthusiasts around the world.
+      </p>
     </div>
+
+    <div class="max-w-4xl mx-auto text-gray-700 text-lg space-y-6">
+      <p>
+        Founded in <strong>2025</strong>, LuxuryCarHub redefines how you explore and purchase luxury vehicles. We offer cutting-edge tools and exceptional customer service, connecting you with the finest luxury car dealers globally.
+      </p>
+
+      <div>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Our Services</h2>
+        <ul class="space-y-3 list-disc list-inside">
+          <li><strong>Luxury Car Listings:</strong> Curated selections of exquisite luxury vehicles from trusted dealers worldwide.</li>
+          <li><strong>Dealer Connections:</strong> Seamless access to authorized dealers for a transparent, personalized experience.</li>
+          <li><strong>Expert Reviews and Insights:</strong> Stay updated with in-depth reviews and expert opinions.</li>
+          <li><strong>Financing Assistance:</strong> Discover premium financing options tailored to your needs.</li>
+          <li><strong>Custom Search Tools:</strong> Use powerful filters to find your dream car effortlessly.</li>
+          <li><strong>Dedicated Support:</strong> Exceptional service at every step of your car-buying journey.</li>
+        </ul>
+      </div>
+
+      <p>
+        Thank you for choosing <strong>LuxuryCarHub</strong>. Together, let’s drive your passion for luxury to new heights.
+      </p>
+    </div>
+  </div>
+</section>
+
 
     <!-- Footer -->
     <footer class="bg-gray-800 text-white text-center py-6">
