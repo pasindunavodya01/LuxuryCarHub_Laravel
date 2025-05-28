@@ -70,29 +70,38 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // Add new vehicle
-    Route::post('/vehicles', function (Request $request) {
-        $request->validate([
-            'make' => 'required|string',
-            'model' => 'required|string',
-            'year' => 'required|integer',
-            'fuel' => 'required|string',
-            'price' => 'required|numeric',
-            'description' => 'required|string',
-            'images' => 'required|string', // or use 'image_url' if that's your frontend field
-        ]);
 
-        $car = Car::create([
-            'make' => $request->make,
-            'model' => $request->model,
-            'year' => $request->year,
-            'fuel' => $request->fuel,
-            'price' => $request->price,
-            'description' => $request->description,
-            'images' => $request->images,
-        ]);
+Route::post('/vehicles', function (Request $request) {
+    $request->validate([
+        'make' => 'required|string',
+        'model' => 'required|string',
+        'year' => 'required|integer',
+        'price' => 'required|numeric',
+        'fuel' => 'required|string',
+        'description' => 'required|string',
+        'images' => 'required|string',
+    ]);
 
-        return response()->json(['message' => 'Vehicle added successfully', 'vehicle' => $car], 201);
-    });
+    $user = $request->user(); // Authenticated dealer
+
+    // Ensure only dealers can add vehicles
+    if ($user->role !== 'dealer') {
+        return response()->json(['message' => 'Only dealers can add vehicles'], 403);
+    }
+
+    $car = Car::create([
+        'make' => $request->make,
+        'model' => $request->model,
+        'year' => $request->year,
+        'fuel' => $request->fuel,
+        'price' => $request->price,
+        'description' => $request->description,
+        'images' => $request->images,
+        'dealer_id' => $user->id
+    ]);
+
+    return response()->json($car, 201);
+})->middleware('auth:sanctum');
 
     Route::put('/vehicles/{id}', function (Request $request, $id) {
         $car = Car::find($id);
