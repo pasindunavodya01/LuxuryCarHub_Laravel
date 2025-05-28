@@ -1,34 +1,40 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\ValidationException;
+use App\Models\User;
+use App\Models\Car;
 
-// User Routes
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Public routes
+Route::get('/dealers', function () {
+    $dealers = User::where('role', 'dealer')->get();
+    return response()->json($dealers);
+});
 
 // Registration
 Route::post('/register', function (Request $request) {
     $request->validate([
-        'name' => 'required',
+        'name' => 'required|string|max:255',
         'email' => 'required|email|unique:users',
-        'password' => 'required|min:6',
+        'phone' => 'required|string|max:15',
+        'role' => 'required|in:user,dealer',
+        'password' => 'required|string|min:6',
     ]);
 
     $user = User::create([
         'name' => $request->name,
         'email' => $request->email,
+        'phone' => $request->phone,
+        'role' => $request->role,
         'password' => Hash::make($request->password),
     ]);
 
-    return response()->json(['message' => 'User registered successfully']);
+    return response()->json(['message' => 'User registered successfully', 'user' => $user]);
 });
 
-// Login and token creation
+// Login
 Route::post('/login', function (Request $request) {
     $request->validate([
         'email' => 'required|email',
@@ -52,70 +58,89 @@ Route::post('/login', function (Request $request) {
     ]);
 });
 
-Route::post('/logout', function (Request $request) {
-    $request->user()->tokens()->delete();
-    return response()->json(['message' => 'Logged out']);
-})->middleware('auth:sanctum');
+// Authenticated routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 
-// Vehicle Routes
+    Route::post('/logout', function (Request $request) {
+        $request->user()->tokens()->delete();
+        return response()->json(['message' => 'Logged out']);
+    });
+
+    // Add new vehicle
+    Route::post('/vehicles', function (Request $request) {
+        $request->validate([
+            'make' => 'required|string',
+            'model' => 'required|string',
+            'year' => 'required|integer',
+            'fuel' => 'required|string',
+            'price' => 'required|numeric',
+            'description' => 'required|string',
+            'images' => 'required|string', // or use 'image_url' if that's your frontend field
+        ]);
+
+        $car = Car::create([
+            'make' => $request->make,
+            'model' => $request->model,
+            'year' => $request->year,
+            'fuel' => $request->fuel,
+            'price' => $request->price,
+            'description' => $request->description,
+            'images' => $request->images,
+        ]);
+
+        return response()->json(['message' => 'Vehicle added successfully', 'vehicle' => $car], 201);
+    });
+
+    Route::put('/vehicles/{id}', function (Request $request, $id) {
+        $car = Car::find($id);
+        if (!$car) {
+            return response()->json(['message' => 'Vehicle not found'], 404);
+        }
+
+        $request->validate([
+            'make' => 'sometimes|string',
+            'model' => 'sometimes|string',
+            'year' => 'sometimes|integer',
+            'fuel' => 'sometimes|string',
+            'price' => 'sometimes|numeric',
+            'description' => 'sometimes|string',
+            'images' => 'sometimes|string',
+        ]);
+
+        $car->update($request->all());
+
+        return response()->json(['message' => 'Vehicle updated successfully', 'vehicle' => $car]);
+    });
+
+    Route::delete('/vehicles/{id}', function (Request $request, $id) {
+        $car = Car::find($id);
+        if (!$car) {
+            return response()->json(['message' => 'Vehicle not found'], 404);
+        }
+
+        $car->delete();
+        return response()->json(['message' => 'Vehicle deleted successfully']);
+    });
+});
+
+// Public vehicle routes
 Route::get('/vehicles', function () {
-    return response()->json(App\Models\Car::all());
+    return response()->json(Car::all());
 });
 
 Route::get('/vehicles/{id}', function ($id) {
-    $car = App\Models\Car::find($id);
+    $car = Car::find($id);
     if (!$car) {
         return response()->json(['message' => 'Vehicle not found'], 404);
     }
     return response()->json($car);
 });
 
-Route::post('/vehicles', function (Request $request) {
-    $request->validate([
-        'make' => 'required|string',
-        'model' => 'required|string',
-        'year' => 'required|integer',
-        'price' => 'required|numeric',
-        'fuel' => 'required|string',
-        'images' => 'required|string'
-    ]);
-
-    $car = App\Models\Car::create($request->all());
-    return response()->json($car, 201);
-})->middleware('auth:sanctum');
-
-Route::put('/vehicles/{id}', function (Request $request, $id) {
-    $car = App\Models\Car::find($id);
-    if (!$car) {
-        return response()->json(['message' => 'Vehicle not found'], 404);
-    }
-
-    $request->validate([
-        'make' => 'string',
-        'model' => 'string',
-        'year' => 'integer',
-        'price' => 'numeric',
-        'fuel' => 'string',
-        'images' => 'string'
-    ]);
-
-    $car->update($request->all());
-    return response()->json($car);
-})->middleware('auth:sanctum');
-
-Route::delete('/vehicles/{id}', function (Request $request, $id) {
-    $car = App\Models\Car::find($id);
-    if (!$car) {
-        return response()->json(['message' => 'Vehicle not found'], 404);
-    }
-
-    $car->delete();
-    return response()->json(['message' => 'Vehicle deleted successfully']);
-})->middleware('auth:sanctum');
-
-// Search vehicles
 Route::get('/vehicles/search', function (Request $request) {
-    $query = App\Models\Car::query();
+    $query = Car::query();
 
     if ($request->has('make')) {
         $query->where('make', 'like', '%' . $request->make . '%');
@@ -138,5 +163,3 @@ Route::get('/vehicles/search', function (Request $request) {
 
     return response()->json($query->get());
 });
-
-

@@ -11,7 +11,7 @@
 </head>
 <body class="bg-gray-100">
 
-```
+
 <!-- Navbar -->
 <nav class="bg-gray-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -43,7 +43,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Mobile menu -->
         <div id="mobile-menu" class="md:hidden hidden">
             <ul class="space-y-4 text-white">

@@ -59,7 +59,7 @@
     });
 </script>
 
-   <!-- About Us Section -->
+<!-- About Us Section -->
 <section class="bg-white py-16">
   <div class="container mx-auto px-6 md:px-12 lg:px-20">
     <div class="text-center mb-12">
